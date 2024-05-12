@@ -45,33 +45,44 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 	} */
 
 int crear_conexion(char *ip, char* puerto) {
-    struct addrinfo hints, *server_info;
+        struct addrinfo hints;
+	struct addrinfo *server_info;
 
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_PASSIVE;
 
-    if (getaddrinfo(ip, puerto, &hints, &server_info) != 0) {
+getaddrinfo(ip, puerto, &hints, &server_info);
+	
+  /*  POR AHORA EL CHEQUEO DE ERRORES NO LO HACE
+  if (getaddrinfo(ip, puerto, &hints, &server_info) != 0) {
         perror("Error en getaddrinfo");
         //return -1;
 		exit(-1);
     }
-
-    int socket_cliente = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
-    if (socket_cliente == -1) {
+*/
+	
+    int socket_cliente = socket(server_info->ai_family,
+				server_info->ai_socktype,
+				server_info->ai_protocol);
+	
+   /*  if (socket_cliente == -1) {
         perror("Error al crear socket");
         freeaddrinfo(server_info);
         //return -1;
 		exit(-1);
-    }
+    }*/
 	//printf("El puerto es: %d: y la ip: %d\n", puerto,ip);
-    if (connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1) {
+	connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen)
+		
+    /*if (connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1) {
         perror("Error en connect");
         close(socket_cliente);
         freeaddrinfo(server_info);
         //return -1;
 		exit(-1);
-    }
+    }*/
 
     freeaddrinfo(server_info);
     return socket_cliente;
@@ -165,8 +176,8 @@ int iniciar_servidor(char* puerto, t_log* un_log, char *msj_server)
 
 	// Creamos el socket de escucha del servidor
 	socket_servidor = socket(server_info->ai_family,
-							server_info->ai_socktype,
-							server_info->ai_protocol);
+				 server_info->ai_socktype,
+				 server_info->ai_protocol);
 
 	// Asociamos el socket a un puerto
 	bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen);
@@ -337,7 +348,9 @@ int esperar_cliente(int socket_servidor, t_log* un_log, char* msj) {
 
 
 
-/*int recibir_operacion(int socket_cliente)
+/*
+USA ESTA DE RECIBIR OPERACION, preguntar por que estamos usando la otra
+int recibir_operacion(int socket_cliente)
 {
 	//enum op_code cod_op;
 	int cod_op;

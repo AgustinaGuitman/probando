@@ -33,6 +33,8 @@ typedef enum
 {
 	MENSAJE,
 	PAQUETE,
+	HANDSHAKE, //agrega un enum para handshake supongo q despues lo vamos a usar
+	RTA_HANDSHAKE,
 	KERNEL_DISPATCH,
 	KERNEL_INTERRUPT,
 	KERNEL_MEMORIA,
